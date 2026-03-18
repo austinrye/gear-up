@@ -1,0 +1,95 @@
+### Kotlin / Java
+build/
+out/
+target/
+*.class
+*.jar
+*.war
+*.ear
+*.iml
+.idea/
+*.ipr
+*.iws
+.classpath
+.project
+.settings/
+*.log
+hs_err_pid*
+*.hprof
+*.kotlin_module
+
+### Spring Boot
+/logs/
+spring.log
+*.pid
+tmp/
+
+### Editor: VS Code
+.vscode/
+.vscode/*
+
+### Node / React / Next.js
+node_modules/
+.next/
+/.next/
+/.turbo/
+dist/
+out/
+build/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+### Environment files
+.env
+.env.*.local
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.local
+
+### Editor directories and files
+.vscode/
+/.idea/
+*.sublime-workspace
+*.sublime-project
+
+### OS files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+
+### IDE / Tools
+.cache/
+.gradle/
+/.factorypath
+/.metadata/
+/.settings/
+
+### Optional IDE files
+# Keep these if collaborators use other IDEs (uncomment as needed)
+# .idea/
+# *.iml
+
+### Docker
+docker-compose.override.yml
+docker-compose.*.yml
+
+### Secrets
+*.jks
+*.keystore
+*.pem
+*.p12
+secrets.env
+
+### Coverage
+coverage/
+coverage.*
+*.lcov
+
+### Lock files (optional)
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
