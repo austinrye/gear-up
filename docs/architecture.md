@@ -64,11 +64,9 @@ Notes on correctness:
 
 Adopt a pragmatic hybrid API strategy:
 
-- REST for public-facing HTTP/JSON APIs — easy for browsers, mobile apps, and third-party integrations. Implement with Spring Web (MVC or WebFlux).
-- gRPC for internal service-to-service calls — use `grpc-kotlin` and protobuf for strong typing, low latency, and streaming where useful. Expose gRPC-Web via a proxy (Envoy) if needed for browser clients.
-- GraphQL only as a gateway/BFF when the frontend requires complex, aggregated queries; use Spring for GraphQL to implement a gateway if necessary.
-
-Recommendation: start with REST for external clients and gRPC for internal communication; add GraphQL later if the frontend requires it.
+- REST for public-facing HTTP/JSON APIs — easy for browsers, mobile apps, and third-party integrations. Implement with Express.js and TypeScript.
+- gRPC for internal service-to-service calls — use `@grpc/grpc-js` (grpc-node) and protobuf for strong typing, low latency, and streaming where useful. Expose gRPC-Web via a proxy (Envoy) if needed for browser clients.
+- GraphQL only as a gateway/BFF when the frontend requires complex, aggregated queries; use Apollo Server or a GraphQL gateway in Node for that layer if necessary.
 
 ## Geospatial & Search
 
@@ -105,6 +103,5 @@ Recommendation: start with REST for external clients and gRPC for internal commu
 
 1. Add diagrams to this document: component diagram and booking sequence diagram (Mermaid).
 2. Create `infra/terraform/` skeleton and a `docker-compose` for local development (Postgres + PostGIS + Redis).
-3. Prototype `services/booking` with sqlite or an in-memory DB to exercise exclusion constraints and the saga flow (no external Stripe calls for prototype).
 
 ---

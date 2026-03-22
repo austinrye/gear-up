@@ -1,28 +1,13 @@
-### Kotlin / Java
+### Node / TypeScript / Backend
+node_modules/
+dist/
+lib/
 build/
 out/
-target/
-*.class
-*.jar
-*.war
-*.ear
-*.iml
-.idea/
-*.ipr
-*.iws
-.classpath
-.project
-.settings/
-*.log
-hs_err_pid*
-*.hprof
-*.kotlin_module
-
-### Spring Boot
-/logs/
-spring.log
-*.pid
-tmp/
+*.tsbuildinfo
+.turbo/
+.parcel-cache/
+.next/
 
 ### Editor: VS Code
 .vscode/
@@ -31,8 +16,8 @@ tmp/
 ### Node / React / Next.js
 node_modules/
 .next/
-/.next/
-/.turbo/
+/next/
+.turbo/
 dist/
 out/
 build/

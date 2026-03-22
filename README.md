@@ -52,7 +52,7 @@ Key design choices:
 ## Tech Stack
 
 - Frontend: React + Vite + TypeScript
-- Backend: Kotlin + Spring Boot
+- Backend: Node.js + Express.js + TypeScript
 - DB: PostgreSQL with PostGIS
 - API: REST (public) + gRPC (internal) + GraphQL (optional gateway/BFF)
 - Cache/locks: Redis
@@ -64,7 +64,7 @@ Key design choices:
 ## Project Layout
 
 - `frontend/` — React + Vite + TypeScript frontend (PWA-ready)
-- `backend/app/` - Spring Boot + Kotlin application
+- `backend/app/` - Node.js + Express.js + Typescript application
 - `backend/modules/common` — common libraries, DTOs, domain primitives, validation, error types, DB migrations, ORM models shared across modules; keep minimal surface and backward-compatible.
 - `backend/modules/auth` — registration, login, JWT/OAuth/SSO, sessions/tokens, roles, 2FA, KYC/verification; owns users, auth_tokens, identities tables; exposes sync REST/gRPC auth API and account events.
 - `backend/modules/users` — user profiles, owner/renter attributes, verification badges, reputation score; owns profile metadata and verification artifacts; provides profile read APIs.
@@ -168,8 +168,8 @@ Concurrency and correctness: use PostgreSQL exclusion constraints for dateranges
 
 Requirements:
 
-- Java 17+ (or compatible JVM) and Kotlin
-- Gradle (recommended) or Maven with Kotlin support
+- Node.js 18+ and Typescript
+- `npm` for package management
 - Docker (for local Postgres + Redis)
 - Terraform (optional, for infra skeleton)
 
@@ -179,11 +179,9 @@ Quickstart (local dev sketch):
 git clone https://github.com/your-org/gear-up.git
 cd gear-up
 # start local dev DBs via docker-compose (to be added)
-# cd web && npm install && npm run dev
-# backend services use Gradle/Kotlin: e.g. cd service/booking && ./gradlew bootRun
+# frontend: cd frontend && npm install && npm run dev
+# backend services (Node/Express): e.g. cd backend/services/booking && npm install && npm run dev
 ```
-
-This repo currently contains architecture notes. I can scaffold `docs/architecture.md`, `infra/terraform/`, and a minimal `service/booking` prototype next.
 
 ## Roadmap
 
