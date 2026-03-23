@@ -53,7 +53,7 @@ Key design choices:
 
 - Frontend: React + Vite + TypeScript
 - Backend: Node.js + Express.js + TypeScript
-- DB: PostgreSQL with PostGIS
+- DB: PostgreSQL + PostGIS + Prisma
 - API: REST (public) + gRPC (internal) + GraphQL (optional gateway/BFF)
 - Cache/locks: Redis
 - Search: Elasticsearch / OpenSearch
@@ -63,23 +63,68 @@ Key design choices:
 
 ## Project Layout
 
-- `frontend/` — React + Vite + TypeScript frontend (PWA-ready)
-- `backend/app/` - Node.js + Express.js + Typescript application
-- `backend/modules/common` — common libraries, DTOs, domain primitives, validation, error types, DB migrations, ORM models shared across modules; keep minimal surface and backward-compatible.
-- `backend/modules/auth` — registration, login, JWT/OAuth/SSO, sessions/tokens, roles, 2FA, KYC/verification; owns users, auth_tokens, identities tables; exposes sync REST/gRPC auth API and account events.
-- `backend/modules/users` — user profiles, owner/renter attributes, verification badges, reputation score; owns profile metadata and verification artifacts; provides profile read APIs.
-- `backend/modules/catalog` — listings CRUD, categories, attributes, media metadata, thumbnails; owns listings, listing_attributes, media metadata; coordinates with Media subsystem for storage/transform; exposes catalog read/write APIs.
-- `backend/modules/search` — full-text indexing, geo-search, faceted filters, autosuggest; maintains search index (Elasticsearch/Opensearch) and sync workers; provides search API (query-only surface).
-- `backend/modules/booking` — calendar, reservations, holds, conflict detection, cancellations, timezone handling, booking lifecycle; owns bookings, availability tables; exposes booking command API and booking events.
-- `backend/modules/inventory` — item state (available, checked-out, maintenance), check-in/out workflows, pickup/delivery, shipping integration; owns inventory_items, fulfillment tasks; exposes inventory control API.
-- `backend/modules/pricing` — pricing rules, seasonal rates, discounts, coupons, security deposits, dynamic pricing hooks; owns pricing rule store and evaluation engine; exposes pricing API and validation.
-- `backend/modules/payments` — payment processing (Stripe Connect integration), gateway integration, split payouts to owners, refunds, invoices, tax handling, reconciliation; owns transactions, payouts, invoices; communicates with external gateways and emits financial events.
-- `backend/modules/notifications` — in-app messaging, email/SMS/push, templating, delivery retries, message persistence; owns messages, notification_preferences; exposes send/subscribe APIs and consumes domain events.
-- `backend/modules/reviews` — post-rental reviews, aggregated scores, moderation, dispute flags; owns reviews, ratings; exposes review APIs and moderation tools.
-- `backend/modules/insurance` — insurance quoting/checkout integration, claims intake endpoints, risk scoring, fraud checks; houses risk models and policy references; emits risk/hold flags.
-- `backend/modules/admin` — admin UI APIs, moderation actions, manual payouts, support tools, feature flag control; unified admin surface with elevated permissions.
-- `infra/` — Terraform/CloudFormation and deployment scripts
-- `docs/` — architecture diagrams, sequence flows, runbooks
+```
+.
+├── web/                        # Frontend: React + Vite + TypeScript
+│   └── src/
+│       ├── app/                # Next.js App Router (routes & layouts)
+│       │   ├── listings/       # grid, filters
+│       │   ├── listings/[id]/  # dynamic listing details
+│       │   ├── search/         # results, map, filters
+│       │   ├── booking/        # booking flow and details
+│       │   ├── checkout/       # payment, confirmation
+│       │   ├── account/        # profile, settings
+│       │   ├── auth/           # sign-in, sign-up, reset
+│       │   ├── admin/          # admin dashboards (protected)
+│       │   ├── layout.tsx      # Root layout (HTML shell, providers)
+│       │   └── page.tsx        # Root (home) page
+│       ├── components/         # Global UI components
+│       │   ├── ui/             # High-reusability (Button, Input, Card) + shadcn
+│       │   └── layout/         # App-wide UI (Navbar, Footer)
+│       └── features/           # Feature specific UI/logic
+│           ├── auth/           # Authentication flows (signup, login, session)
+│           ├── users/          # Profiles, settings, verification
+│           ├── catalog/        # Listing browse, details, and media
+│           ├── search/         # Search, filters, autosuggest, map
+│           ├── booking/        # Booking flow, checkout, calendar
+│           ├── inventory/      # Owner item management & availability
+│           ├── pricing/        # Pricing UI, discounts, coupons
+│           ├── payments/       # Checkout UI, payment methods, receipts
+│           ├── notifications/  # In-app notifications and preferences
+│           ├── reviews/        # Reviews, ratings, moderation UI
+│           ├── insurance/      # Insurance options and quoting UI
+│           └── admin/          # Admin dashboards and moderation tools
+│
+├── api/                        # Backend APIs: Node.js + Express.js
+│   └── src/
+│       ├── configs/            # Env vars, validation, DB connection
+│       ├── middlewares/        # Auth, error handling, rate limiting
+│       ├── modules/            # Env vars, validation, migrations, ORM models
+│       │   ├── auth/           # Registration, login, sessions, KYC, identity
+│       │   ├── users/          # Profiles, verification badges, reputation
+│       │   ├── catalog/        # Listings, media metadata, thumbnails
+│       │   ├── search/         # Indexing, geo-search, autosuggest
+│       │   ├── booking/        # Reservations, calendar, lifecycle, conflict detection
+│       │   ├── inventory/      # Item state, check-in/out, fulfillment tasks
+│       │   ├── pricing/        # Pricing rules, discounts, deposits
+│       │   ├── payments/       # Stripe Connect integration, transactions, payouts
+│       │   ├── notifications/  # Email/SMS/push, templating, delivery
+│       │   ├── reviews/        # Reviews, ratings, moderation
+│       │   ├── insurance/      # Quoting, claims intake, risk checks
+│       │   └── admin/          # Admin APIs, moderation, manual payouts
+│       └── index.js            # Server entry point
+│
+├── db/                         # Database: PostgreSQL + Prisma
+│   ├── prisma/
+│   │   ├── migrations/         # Migration history
+│   │   └── schema.prisma       # Canonical Prisma schema (models, enums, generators)
+│   └── src/
+│       ├── client.ts           # Exports a configured Prisma Client instance
+│       └── seed.ts             # Local development seed
+│
+├── infra/                      # Terraform/CloudFormation and deployment scripts
+└── docs/                       # Architecture diagrams, sequence flows, runbooks
+```
 
 ## Features
 
