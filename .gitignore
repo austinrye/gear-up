@@ -73,8 +73,3 @@ secrets.env
 coverage/
 coverage.*
 *.lcov
-
-### Lock files (optional)
-package-lock.json
-yarn.lock
-pnpm-lock.yaml

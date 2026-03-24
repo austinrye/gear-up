@@ -1,0 +1,11 @@
+{
+  "name": "gear-up",
+  "version": "0.1.0",
+  "description": "A marketplace to rent outdoor gear",
+  "workspaces": [
+    "api"
+  ],
+  "devDependencies": {
+    "prettier": "3.8.1"
+  }
+}

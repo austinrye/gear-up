@@ -112,6 +112,7 @@ Key design choices:
 │       │   ├── reviews/        # Reviews, ratings, moderation
 │       │   ├── insurance/      # Quoting, claims intake, risk checks
 │       │   └── admin/          # Admin APIs, moderation, manual payouts
+│       ├── app.js              # Express app setup & middleware
 │       └── index.js            # Server entry point
 │
 ├── db/                         # Database: PostgreSQL + Prisma
