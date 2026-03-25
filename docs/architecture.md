@@ -26,17 +26,6 @@ Principles:
 - Datastores: PostgreSQL (+PostGIS) for domain data; Redis for cache/locks; OpenSearch for search.
 - Object Storage: S3-compatible storage for photos and evidence artifacts.
 
-## Data model (summary)
-
-- users: id, role, email, kyc_status, payout_info
-- gear: id, owner_id, title, description, price_per_day, deposit, location (geom)
-- gear_photos: id, gear_id, object_key, hash, uploaded_by, uploaded_at
-- bookings: id, gear_id, renter_id, start_date, end_date, status, total_amount, hold_id
-- payments: id, booking_id, stripe_intent_id, amount, status
-- disputes: id, booking_id, type, status, evidence_refs
-
-Persist important state transitions (booking.created, booking.confirmed, payment.captured) to an append-only events table to facilitate audits and replay.
-
 ## Booking sequence (simplified)
 
 1. Client queries Catalog + Availability to display available gear.
@@ -103,5 +92,70 @@ Adopt a pragmatic hybrid API strategy:
 
 1. Add diagrams to this document: component diagram and booking sequence diagram (Mermaid).
 2. Create `infra/terraform/` skeleton and a `docker-compose` for local development (Postgres + PostGIS + Redis).
+
+## Frontend pages (UI surface)
+
+This section lists the web pages and UI surfaces required for the MVP and near-term features. Pages are grouped by public, renter, owner (host), account/auth, messaging/support, and admin flows.
+
+### Public
+
+- Home / Landing: marketing, search hero, featured listings, call-to-actions.
+- Explore / Search Results: list + map, filters, date & location inputs, autosuggest.
+- Listing Detail: full gallery, description, rules, host info, availability calendar, reviews, booking CTA.
+- Listing Preview Modal: quick view from search results.
+- Static / Marketing: About, How it Works, FAQ, Roadmap, Terms & Privacy.
+
+### Booking & Renter Flow
+
+- Availability Calendar: select start/end dates and see blocked dates.
+- Booking Review: price breakdown, add-ons, optional insurance, cancellation policy.
+- Checkout / Payment: payment method entry, payment authorization/hold flow, confirmation.
+- Booking Confirmation / Receipt: booking summary, contact info, next steps.
+- My Bookings / Upcoming Trips: list of bookings with status, modify/cancel actions.
+- Booking Detail Page: conversation, pickup/delivery instructions, check-in/out checklist, dispute actions.
+- Post-Rental Review: leave rating and review for host and item.
+
+### Owner (Host) Flow
+
+- Create / Edit Listing Wizard: details, photos, pricing, availability rules, location entry.
+- Listing Manager / Host Dashboard: list of owner listings, publish/draft, basic analytics.
+- Listing Calendar / Availability Management: block dates, sync iCal, maintenance mode.
+- Reservations Inbox: incoming booking requests, accept/decline, manage booking lifecycle.
+- Payouts & Transactions: earnings overview, payout settings, payout history, transaction detail.
+- Performance & Analytics: occupancy, revenue trends, top listings.
+- Host Onboarding / KYC: identity verification, Stripe Connect onboarding, tax info.
+
+### Account & Auth
+
+- Sign Up / Sign In: email/phone, social login, passwordless options, MFA enrollment.
+- Confirmations & Password Reset: email/OTP flows and recovery.
+- Profile: public-facing profile with verification badges and bio.
+- Settings: notification preferences, communication channels, privacy settings.
+- Payment Methods: saved cards and bank accounts, add/remove.
+- Security: 2FA, active sessions, device management.
+
+### Messaging & Support
+
+- In-app Messaging / Conversations: renter ↔ host per booking, message list and composer.
+- Help Center / Knowledge Base: searchable support articles.
+- Support Ticket / Contact Form: file attachments, ticket status.
+- Dispute / Claims Flow: open a dispute, upload evidence, view status and resolution.
+
+### Admin & Moderation
+
+- Admin Dashboard: system metrics, recent activity, health checks.
+- User Management: view/suspend/reactivate users, KYC status checks.
+- Listing Moderation: review pending listings, flagged media, remove content.
+- Transaction Management: refunds, manual payouts, ledger views.
+- Reports & Audit: disputes, chargebacks, operational reports and exports.
+
+### System & Utility Pages
+
+- Notifications Center: centralized in-app notifications.
+- Search Autosuggest & Empty States: UX for no results and edge cases.
+- Error Pages: 404, 500, maintenance.
+- Developer / API Docs (optional): webhook docs, integration guides.
+
+These pages are intentionally organized to map to the backend services and event flows defined in this architecture doc (Catalog, Availability, Booking, Payments, Notifications). Use these page groupings when designing routes, components, and BFF/GraphQL schemas.
 
 ---

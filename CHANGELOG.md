@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.1] - 2026-03-24
+
+### Added
+
+- [DOC] 'Frontend Pages' details to architecture.md
+- [DOC] 'Database Schema' to database.md
+- [DOC] 'Key Features' to README.md
+
+### Moved
+
+- [DOC] 'Project Layout' from README.md to project-structure.md
+- [DOC] Features from README.md to features.md
+
+### Changed
+
+- [DOC] 'About' section in README.md to 'Overview' with simplified details
+- [DOC] Changed name of project from 'Gear Up' to 'GearUp'
+- [DOC] 'Tech Stack' section in README.md with Next.js
+- [DOC] 'Getting Started' in README.md to 'Quick Start' with updated commands
+
+### Removed
+
+- [DOC] 'Roadmap' from README.md
+- [DOC] Removed 'Architecture Overview' from README.md
+- [DOC] 'Booking & Payment Flow' from README.md
+
 ## [0.1.0] - 2026-03-23
 
 ### Added
